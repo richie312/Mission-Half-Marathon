@@ -40,31 +40,47 @@ input[type=submit]:hover {
 
 <body>
 
-<h3>Enter Details</h3>
+<h2 style = "text-align: center;">Mission Half Marathon</h2>
 
 <div class="container">
   <form action="/addDetails" method="post">
-    <label for="fname">Running Details</label>
-    <input type="text" id="company" name="Company" placeholder="Amazon">
-    <input type="text" id="location" name="Location" placeholder="Pune">
-    <input type="text" id="email" name="Email Address" placeholder="xxxx@capitalnumbers.com">
-    <input type="password" id="password" name="Password" value="FakePSW" placeholder="xxxx">
-    <input type="checkbox" onclick="myFunction()">Show Password
-    <script>
-    function myFunction() {
-      var x = document.getElementById("password");
-      if (x.type === "password") {
-        x.type = "text";
-      } else {
-        x.type = "password";
-      }
-    }
-    </script>
-
-    <input type="text" id="subject" name="Subject" placeholder="Data Science, R/Python Developer">
+    <label for="fname"><h3>Running Details</h3></label>
+    <div>
+    <br>
+    <label for="fname">Duration</label>
+    <br>
+    <br>
+    <input type="time" id="Duration" name="Duration" placeholder="">
+    <br>
+    <br>
+    <label for="fname">Distance Covered</label>
+    <br>
+    <br>   
+    <input type="number" id="Distance" name="Distance" placeholder="">
+    <br>
+    <br>   
+    <label for="fname">Oxygen Level</label>
+    <br>
+    <br>   
+    <input type="number" id="Oxygen" name="Oxygen"  min="0" max="100" step="0.01">
+    <br>
+    <br>   
+    <label for="fname">Pulse Rate</label>
+    <br>
+    <br>   
+    <input type="number" id="PulseRate" name="PulseRate"  min="40" max="250">
+    <br>
+    <br>   
+    <label for="fname">Day</label>
+    <br>
+    <br>   
+    <input type="week" id="Day" name="Day" placeholder="Thursday">
+    <br>
+    <br>   
     <input type="reset" value="Reset">
-    <input type="submit" value="Send Mail">
+    <input type="submit" value="Submit Entry">
   </form>
+</div>
 </div>
 
 </body>
