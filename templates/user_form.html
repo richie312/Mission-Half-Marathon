@@ -47,16 +47,23 @@ input[type=submit]:hover {
     <label for="fname"><h3>Running Details</h3></label>
     <div>
     <br>
-    <label for="fname">Duration</label>
+    <label for="fname">StartTime</label>
     <br>
     <br>
-    <input type="time" id="Duration" name="Duration" placeholder="">
+    <input type="time" id="StartTime" name="StartTime" placeholder="">
     <br>
     <br>
+    <label for="fname">EndTime</label>
+    <br>
+    <br>
+    <input type="time" id="EndTime" name="EndTime" placeholder="">
+    <br>
+    <br>
+    
     <label for="fname">Distance Covered</label>
     <br>
     <br>   
-    <input type="number" id="Distance" name="Distance" placeholder="">
+    <input type="number" id="Distance" name="Distance" min="0" max="100" step="0.01">
     <br>
     <br>   
     <label for="fname">Oxygen Level</label>
