@@ -47,6 +47,15 @@ input[type=submit]:hover {
     <label for="fname"><h3>Running Details</h3></label>
     <div>
     <br>
+    <label for="fname">Work Out Mode</label>
+    <br>
+    <br>
+    <select id="workout_type" name="workout_type">
+      {% for each in workout_type %}
+      <option value="{{each}}">{{each}}</option>
+      {% endfor %}
+    <br>
+    <br>
     <label for="fname">StartTime</label>
     <br>
     <br>

@@ -41,7 +41,10 @@ load_dotenv('.env')
 """ read the list of users"""
 @app.route("/")        
 def homepage():
-    return render_template("user_form.html")
+    with open(r'workout_type.txt','r') as readfile:
+        workout_type = readfile.readlines()
+    
+    return render_template("user_form.html", workout_type = workout_type)
 
 
 
@@ -58,7 +61,7 @@ def addDetails():
     
     start_time = datetime.strptime(data['StartTime'],'%H:%M')
     end_time = datetime.strptime(data['EndTime'],'%H:%M')
-    
+    work_out_type = str(data['workout_type'])
     # Convert total seconds into days, hours, minutes and, seconds.
     duration = end_time - start_time
     time_delta = pd.to_timedelta(duration.total_seconds(), unit='s')
@@ -70,12 +73,13 @@ def addDetails():
     refined_duration = datetime.strptime(temp_duration,'%H:%M:%S')
     
     query = """ INSERT INTO mission_half_marathon (Duration,DistanceCovered, 
-    OxygenLevel, PulseRate, Day,StartTime,EndTime)
-    VALUES (%s, %s, %s,%s,%s,%s,%s)"""
+    OxygenLevel, PulseRate, Day,StartTime,EndTime,work_out_type)
+    VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"""
     
     cursor.execute(query,(refined_duration,data['Distance'],data['Oxygen'],
                               data['PulseRate'],data['Day'],
-                              data['StartTime'],data['EndTime']))
+                              data['StartTime'],data['EndTime'],
+                              work_out_type))
     connection.commit()
     
     # close the cursor and connection
