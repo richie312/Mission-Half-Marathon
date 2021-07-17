@@ -10,26 +10,11 @@ from datetime import datetime
 
 """ decrypt the database details"""
 main_dir = os.getcwd()
-os.listdir(os.path.join(main_dir,'auth'))
+#os.listdir(os.path.join(main_dir,'auth'))
 from decrypt import *
 
-db_auth = {'dbname.txt':'key_dbname.txt',
-           'db_pass.txt':'key_db_pass.txt',
-           'host.txt':'key_host.txt',
-           'dbuser.txt':'key_dbuser.txt'}
-filename = {}
-for i in db_auth.keys():
-    with open(r'auth/' +i, 'r') as readfile:
-        filename['{}'.format(i.split('.')[0])]= json.load(readfile)
-
-file_key = {}
-for i in db_auth.keys():
-    with open(r'auth/' +db_auth[i], 'r') as readfile:
-        file_key['{}'.format(db_auth[i].split('.')[0])]= json.load(readfile)
-
-db_auth = {}
-for i in filename.keys():
-    db_auth[i] = decrypt(eval(filename[i]),eval(file_key['key_'+i])).decode("utf-8")
+with open(r'database_auth.json','r') as readfile:
+    db_auth = json.load(readfile)
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -51,9 +36,9 @@ def homepage():
 @app.route('/addDetails', methods=['POST'])
 def addDetails():
     connection = mysql.connector.connect(host=db_auth['host'], 
-                                         user=db_auth['dbuser'],
+                                         user=db_auth['user'],
                                          port=3306,
-                                         passwd=db_auth['db_pass'], 
+                                         passwd=db_auth["password"], 
                                          db=db_auth['dbname'])
     
     cursor = connection.cursor()
