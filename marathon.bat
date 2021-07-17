@@ -1,1 +1,1 @@
-C:\pyhton_envs\marathon\Scripts\Activate
+C:\Users\Richie\PersonalProjects\venv\marathon\Scripts\Activate.bat

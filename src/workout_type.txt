@@ -1,0 +1,6 @@
+Walk
+Run
+Jog
+Cycling
+Free Hand Exercise
+Weight Lifting
