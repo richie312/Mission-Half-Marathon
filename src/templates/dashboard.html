@@ -1,0 +1,25 @@
+
+<!doctype html>
+<html>
+ <body>
+  <h1>Training Dashboard</h1>
+  <form action="/Dashboard" method="post">
+    <label for="fname"><h3>Select WorkOut Mode</h3></label>
+   <select id="workout_type" name="workout_type">
+      {% for each in workout_type %}
+      <option value="{{each}}">{{each}}</option>
+      {% endfor %}
+   </select>
+  <input type="submit" value="Submit Entry">
+  </form>
+
+  <div id="chart" class="chart">
+
+  </div>
+</body>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+  var graphs = {{graphJSON | safe}};
+  Plotly.plot('chart',graphs,{});
+</script>
+</html>
