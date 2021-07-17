@@ -1,2 +1,4 @@
 auth/*
 requirements.txt
+marathon.bat
+marathon.sh
