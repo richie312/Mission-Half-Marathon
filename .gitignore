@@ -2,3 +2,8 @@ auth/*
 requirements.txt
 marathon.bat
 marathon.sh
+.idea
+.env
+src/database.json
+src/data/database.json
+src/test.py
