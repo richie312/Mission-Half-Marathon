@@ -7,3 +7,4 @@ marathon.sh
 src/database.json
 src/data/database.json
 src/test.py
+.sql

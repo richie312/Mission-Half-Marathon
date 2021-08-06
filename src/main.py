@@ -11,8 +11,7 @@ from datetime import datetime
 import plotly
 import plotly.express as px
 from data.database import db_conn
-
-
+from common.logger import logger
 
 """ decrypt the database details"""
 main_dir = os.getcwd()
@@ -64,11 +63,11 @@ def addDetails():
     refined_duration = datetime.strptime(temp_duration,'%H:%M:%S')
     
     query = """ INSERT INTO mission_half_marathon (Duration,DistanceCovered, 
-    OxygenLevel, PulseRate, Day,StartTime,EndTime,work_out_type)
-    VALUES (%s, %s, %s,%s,%s,%s,%s,%s)"""
+    OxygenLevel, PulseRate, Day,goal_distance,StartTime,EndTime,work_out_type)
+    VALUES (%s, %s, %s, %s,%s,%s,%s,%s,%s)"""
     
     cursor.execute(query,(refined_duration,data['Distance'],data['Oxygen'],
-                              data['PulseRate'],data['Day'],
+                              data['PulseRate'],data['Day'],data["Goal"],
                               data['StartTime'],data['EndTime'],
                               work_out_type))
     connection.commit()
@@ -88,8 +87,8 @@ def Dashboard():
         df = db.default_data()
         col_list = db.column_list()
         default_df = pd.DataFrame(columns=col_list)
-        col_map = {'Day': 4, 'DistanceCovered': 1, 'Duration': 0, 'EndTime': 6, 'OxygenLevel': 2, 'PulseRate': 3,
-                   'StartTime': 5, 'work_out_type': 7}
+        col_map = {'Day': 4, 'DistanceCovered': 1, 'Duration': 0, 'EndTime': 7, 'OxygenLevel': 2, 'PulseRate': 3,
+                   'StartTime': 6, 'work_out_type': 8, 'goal_distance': 5}
 
         for col_index in range(len(col_list)):
             default_df[col_list[col_index]] = [df[i][col_map[col_list[col_index]]] for i in range(len(df))]
@@ -101,6 +100,9 @@ def Dashboard():
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
         template= "dashboard.html"
         fetch_workout_type = "NA"
+        total_distance = db.total_distance()
+        goal_distance = db.goal_distance()
+        
 
     elif request.method == 'POST':
         data = request.form
@@ -110,8 +112,8 @@ def Dashboard():
         df = db.default_data()
         col_list = db.column_list()
         default_df = pd.DataFrame(columns=col_list)
-        col_map = {'Day': 4, 'DistanceCovered': 1, 'Duration': 0, 'EndTime': 6, 'OxygenLevel': 2, 'PulseRate': 3,
-                   'StartTime': 5, 'work_out_type': 7}
+        col_map = {'Day': 4, 'DistanceCovered': 1, 'Duration': 0, 'EndTime': 7, 'OxygenLevel': 2, 'PulseRate': 3,
+                   'StartTime': 6, 'work_out_type': 8, 'goal_distance': 5}
 
         for col_index in range(len(col_list)):
             default_df[col_list[col_index]] = [df[i][col_map[col_list[col_index]]] for i in range(len(df))]
@@ -121,6 +123,8 @@ def Dashboard():
             template = "user_form_msg.html"
             graphJSON = "NA"
             fetch_workout_type = data["workout_type"]
+            total_distance = 0
+            goal_distance = 0
         else:
             df1 = default_df[["Day", "DistanceCovered"]].groupby(by=["Day"]).sum()
             fig = px.bar(default_df, x=default_df["Day"], y = default_df["DistanceCovered"], color='DistanceCovered',
@@ -128,10 +132,19 @@ def Dashboard():
             graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
             template = "dashboard.html"
             fetch_workout_type = "NA"
+            # todo compute the distance as per the work out mode
+            total_distance = db.total_distance()
+            goal_distance = db.goal_distance()
 
 
-    return render_template(template, graphJSON=graphJSON,  workout_type = workout_type, fetch_workout_type = fetch_workout_type)
-    
+    return render_template(template,
+                           graphJSON=graphJSON,
+                           workout_type = workout_type,
+                           fetch_workout_type = fetch_workout_type,
+                           total_distance = total_distance,
+                           goal_distance = goal_distance)
+
+
 
     
 if __name__ == '__main__':

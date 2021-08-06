@@ -12,7 +12,9 @@
    </select>
   <input type="submit" value="Submit Entry">
   </form>
-
+  <div id='mydistance'><!-- Plotly chart will be drawn inside this DIV --></div>
+  <br>
+  <br>
   <div id="chart" class="chart">
 
   </div>
@@ -21,5 +23,21 @@
 <script type="text/javascript">
   var graphs = {{graphJSON | safe}};
   Plotly.plot('chart',graphs,{});
+</script>
+<script>
+  var data = [
+  {
+    domain: { x: [0, 1], y: [0, 1] },
+    value: '{{total_distance}}',
+    title: { text: "Distance Covered This Week." },
+    type: "indicator",
+    mode: "gauge+number",
+    delta: { reference: 400 },
+    gauge: { axis: { range: [null, '{{goal_distance}}'] } }
+  }
+];
+
+var layout = { width: 600, height: 400 };
+Plotly.newPlot('mydistance', data, layout);
 </script>
 </html>
