@@ -3,7 +3,7 @@ import mysql.connector
 import os
 import json
 from dotenv import load_dotenv
-
+from common.logger import logger
 
 
 
@@ -35,7 +35,39 @@ class db_conn():
         col_list = [col_list[i][0] for i in range(len(col_list))]
         return col_list
         
-        
+    def total_distance(self):
+        max_week_query = "SELECT max(Day) FROM RDS_MySql.mission_half_marathon;"
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute(max_week_query)
+        max_week = cursor.fetchone()
+        max_week = max_week[0]
+
+        # Compute the total distances of the latest week
+        total_distance_query = "select sum(DistanceCovered) from RDS_MySql.mission_half_marathon  where Day=%s"
+        cursor.execute(total_distance_query,(max_week,))
+        total_distance = cursor.fetchone()
+        total_distance = total_distance[0]
+        return total_distance
+
+    def goal_distance(self):
+        max_week_query = "SELECT max(Day) FROM RDS_MySql.mission_half_marathon;"
+        conn = self.connection
+        cursor = conn.cursor()
+        cursor.execute(max_week_query)
+        max_week = cursor.fetchone()
+        max_week = max_week[0]
+
+        # fetch the latest goal distance
+        goal_distance_query = "select goal_distance from RDS_MySql.mission_half_marathon  where Day=%s"
+        cursor.execute(goal_distance_query, (max_week,))
+        goal_distance = cursor.fetchall()
+        # fetch the highest goal
+        goal_distance = [goal_distance[i][0] for i in range(len(goal_distance))]
+        Not_none_values = filter(None.__ne__, goal_distance)
+        goal_distance_without_na = list(Not_none_values)
+        goal_distance = max(goal_distance_without_na)
+        return goal_distance
 
     def default_data(self):
         conn = self.connection

@@ -1,1 +1,1 @@
-C:\Users\Richie\PersonalProjects\venv\marathon\Scripts\Activate.bat
+C:\Users\aritra.a.chatterjee\envs\marathon\Scripts\Activate.bat
